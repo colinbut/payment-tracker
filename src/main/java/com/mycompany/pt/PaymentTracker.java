@@ -41,6 +41,21 @@ public class PaymentTracker {
             printUsage();
             throw new IllegalArgumentException("Invalid number of arguments supplied");
         }
+
+        String optionalInputFile = args[0];
+        try (BufferedReader reader = new BufferedReader(new FileReader(new File(optionalInputFile)))) {
+            String line;
+            while((line = reader.readLine()) != null) {
+                String[] lineItems = line.split(" ");
+                Currency currency = Currency.getInstance(lineItems[0]);
+                BigDecimal amount = new BigDecimal(lineItems[1]);
+                paymentAmounts.add(new MoneyAmount(currency, amount));
+            }
+        } catch (FileNotFoundException e) {
+            log.error("File not found: {}", e);
+        } catch (IOException e) {
+            log.error("File not found: {}", e);
+        }
     }
 
     private static void readInitialInputFile() {
@@ -55,7 +70,7 @@ public class PaymentTracker {
         } catch (FileNotFoundException e) {
             log.error("File not found: {}", e);
         } catch (IOException e) {
-            log.error("IO Exception: {}", e);
+            log.error("File not found: {}", e);
         }
     }
 }
