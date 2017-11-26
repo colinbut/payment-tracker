@@ -8,24 +8,20 @@ package com.mycompany.pt;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Currency;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 public class PaymentTracker {
 
     private static final String INITIAL_INPUT_FILE_NAME = "";
 
-    private static List<MoneyAmount> paymentAmounts = new ArrayList<>();
-
-
-    private static File initialInputFile = new File(INITIAL_INPUT_FILE_NAME);
+    private static Map<Currency, MoneyAmount> paymentAmounts = new HashMap<>();
 
     private static void printUsage() {
         System.out.println("-------------------------------");
@@ -35,7 +31,7 @@ public class PaymentTracker {
 
     public static void main(String[] args) {
 
-        readInitialInputFile();
+        readInitialInputFile(INITIAL_INPUT_FILE_NAME);
 
         if (args.length > 1) {
             printUsage();
@@ -43,34 +39,27 @@ public class PaymentTracker {
         }
 
         String optionalInputFile = args[0];
-        try (BufferedReader reader = new BufferedReader(new FileReader(new File(optionalInputFile)))) {
-            String line;
-            while((line = reader.readLine()) != null) {
-                String[] lineItems = line.split(" ");
-                Currency currency = Currency.getInstance(lineItems[0]);
-                BigDecimal amount = new BigDecimal(lineItems[1]);
-                paymentAmounts.add(new MoneyAmount(currency, amount));
-            }
-        } catch (FileNotFoundException e) {
-            log.error("File not found: {}", e);
-        } catch (IOException e) {
-            log.error("File not found: {}", e);
-        }
+        readInitialInputFile(optionalInputFile);
     }
 
-    private static void readInitialInputFile() {
-        try(BufferedReader reader = new BufferedReader(new FileReader(initialInputFile))) {
+    private static void readInitialInputFile(String inputFile) {
+        try(BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             String line;
             while((line = reader.readLine()) != null) {
                 String[] lineItems = line.split(" ");
                 Currency currency = Currency.getInstance(lineItems[0]);
                 BigDecimal amount = new BigDecimal(lineItems[1]);
-                paymentAmounts.add(new MoneyAmount(currency, amount));
+
+                if (paymentAmounts.get(currency) != null) {
+                    MoneyAmount existingPaymentAmount = paymentAmounts.get(currency);
+                    existingPaymentAmount.setAmount(existingPaymentAmount.getAmount().add(amount));
+                }
+                paymentAmounts.put(currency, new MoneyAmount(currency, amount));
             }
         } catch (FileNotFoundException e) {
             log.error("File not found: {}", e);
         } catch (IOException e) {
-            log.error("File not found: {}", e);
+            log.error("IO Problem: {}", e);
         }
     }
 }
