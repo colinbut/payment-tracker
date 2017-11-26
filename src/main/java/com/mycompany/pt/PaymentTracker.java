@@ -27,8 +27,23 @@ public class PaymentTracker {
 
     private static File initialInputFile = new File(INITIAL_INPUT_FILE_NAME);
 
+    private static void printUsage() {
+        System.out.println("-------------------------------");
+        System.out.println("java -jar PaymentTracker.jar [optional input file]");
+        System.out.println("-------------------------------");
+    }
+
     public static void main(String[] args) {
 
+        readInitialInputFile();
+
+        if (args.length > 1) {
+            printUsage();
+            throw new IllegalArgumentException("Invalid number of arguments supplied");
+        }
+    }
+
+    private static void readInitialInputFile() {
         try(BufferedReader reader = new BufferedReader(new FileReader(initialInputFile))) {
             String line;
             while((line = reader.readLine()) != null) {
@@ -42,6 +57,5 @@ public class PaymentTracker {
         } catch (IOException e) {
             log.error("IO Exception: {}", e);
         }
-
     }
 }
