@@ -5,6 +5,7 @@
  */
 package com.mycompany.pt;
 
+import com.mycompany.pt.scheduling.PaymentsScheduler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -21,7 +22,7 @@ public class PaymentTracker {
 
     private static final String INITIAL_INPUT_FILE_NAME = "";
 
-    private static Map<Currency, MoneyAmount> paymentAmounts = new HashMap<>();
+    private static PaymentListing paymentListing = PaymentListing.getInstance();
 
     private static void printUsage() {
         System.out.println("-------------------------------");
@@ -30,6 +31,8 @@ public class PaymentTracker {
     }
 
     public static void main(String[] args) {
+
+        new PaymentsScheduler().schedulePaymentListings();
 
         readInitialInputFile(INITIAL_INPUT_FILE_NAME);
 
@@ -49,12 +52,7 @@ public class PaymentTracker {
                 String[] lineItems = line.split(" ");
                 Currency currency = Currency.getInstance(lineItems[0]);
                 BigDecimal amount = new BigDecimal(lineItems[1]);
-
-                if (paymentAmounts.get(currency) != null) {
-                    MoneyAmount existingPaymentAmount = paymentAmounts.get(currency);
-                    existingPaymentAmount.setAmount(existingPaymentAmount.getAmount().add(amount));
-                }
-                paymentAmounts.put(currency, new MoneyAmount(currency, amount));
+                paymentListing.addPayment(currency, amount);
             }
         } catch (FileNotFoundException e) {
             log.error("File not found: {}", e);
