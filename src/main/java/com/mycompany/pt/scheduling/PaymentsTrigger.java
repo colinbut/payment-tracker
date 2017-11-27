@@ -8,6 +8,7 @@ package com.mycompany.pt.scheduling;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
@@ -25,7 +26,7 @@ public final class PaymentsTrigger {
     public Trigger createTrigger() {
         Trigger trigger = TriggerBuilder.newTrigger()
             .withIdentity("myTrigger", "group1")
-            .startNow()
+            .startAt(new DateTime().plusMinutes(1).toDate())
             .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(60).repeatForever())
             .build();
 
