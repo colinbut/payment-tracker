@@ -34,10 +34,10 @@ java -jar PaymentTracker.jar optional_input_file.txt
 
 The user can then enter more lines into the console by typing a currency and amount and pressing enter. 
 
-Once per minute, the console outputs the net amounts of each currency. Should the net amount be 0, 
+Every minute, the console outputs the net amounts of each currency. Should the net amount be 0, 
 that currency is not displayed. 
 
-When the user types "quit", the program should exit.
+When the user types "quit" or "q", the program exits.
 
 
 
