@@ -19,7 +19,7 @@ public class PaymentTracker {
 
         new PaymentsScheduler().schedulePaymentListings();
 
-        PaymentTrackerReader.readInputFile(INITIAL_INPUT_FILE_NAME);
+        PaymentTrackerReader.readInputFile("src/main/resources/" + INITIAL_INPUT_FILE_NAME);
 
         if (args.length > 1) {
             UsagePrinter.printUsage();
