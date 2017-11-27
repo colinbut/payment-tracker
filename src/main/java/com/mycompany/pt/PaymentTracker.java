@@ -17,16 +17,18 @@ public class PaymentTracker {
 
     public static void main(String[] args) {
 
-        new PaymentsScheduler().schedulePaymentListings();
-
         PaymentTrackerReader.readInputFile("src/main/resources/" + INITIAL_INPUT_FILE_NAME);
+
+        new PaymentsScheduler().schedulePaymentListings();
 
         if (args.length > 1) {
             UsagePrinter.printUsage();
             throw new IllegalArgumentException("Invalid number of arguments supplied");
         }
 
-        String optionalInputFile = args[0];
-        PaymentTrackerReader.readInputFile(optionalInputFile);
+        if (args.length == 1) {
+            String optionalInputFile = args[0];
+            PaymentTrackerReader.readInputFile(optionalInputFile);
+        }
     }
 }

@@ -6,6 +6,7 @@
 package com.mycompany.pt.io;
 
 import com.mycompany.pt.PaymentListing;
+import com.mycompany.pt.model.CurrencyCode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -13,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Currency;
 
 @Slf4j
 public class PaymentTrackerReader {
@@ -25,9 +25,9 @@ public class PaymentTrackerReader {
             String line;
             while((line = reader.readLine()) != null) {
                 String[] lineItems = line.split(" ");
-                Currency currency = Currency.getInstance(lineItems[0]);
+                CurrencyCode currencyCode = CurrencyCode.valueOf(lineItems[0]);
                 BigDecimal amount = new BigDecimal(lineItems[1]);
-                paymentListing.addPayment(currency, amount);
+                paymentListing.addPayment(currencyCode, amount);
             }
         } catch (FileNotFoundException e) {
             log.error("File not found: {}", e);
