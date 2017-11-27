@@ -23,7 +23,7 @@ public class PaymentsScheduler {
     public void schedulePaymentListings() {
         startScheduler();
 
-        JobDetail jobDetail = newJob(PaymentListingJob.class).withIdentity("myJob", "group1").build();
+        JobDetail jobDetail = newJob(PaymentListingJob.class).withIdentity("paymentListingJob", "group1").build();
 
         try {
             scheduler.scheduleJob(jobDetail, paymentsTrigger.createTrigger());
