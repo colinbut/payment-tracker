@@ -20,7 +20,6 @@ public class PaymentTracker {
 
     private static final String INITIAL_INPUT_FILE_NAME = "initial_input_file.txt";
 
-    private static PaymentListing paymentListing = PaymentListing.getInstance();
 
     public static void main(String[] args) {
 
@@ -50,14 +49,12 @@ public class PaymentTracker {
                 break;
             }
 
-            String[] lineItems = input.split(" ");
-            CurrencyCode currencyCode = CurrencyCode.valueOf(lineItems[0]);
-            BigDecimal amount = new BigDecimal(lineItems[1]);
-            paymentListing.addPayment(currencyCode, amount);
+            Parser.getInstance().invoke(input);
         }
 
         scanner.close();
 
         System.exit(1);
     }
+
 }
