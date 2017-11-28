@@ -33,7 +33,8 @@ public final class PaymentListing {
         if (paymentAmounts.get(currencyCode) != null) {
             MoneyAmount existingPaymentAmount = paymentAmounts.get(currencyCode);
             existingPaymentAmount.setAmount(existingPaymentAmount.getAmount().add(amount));
+        } else {
+            paymentAmounts.put(currencyCode, new MoneyAmount(currencyCode, amount));
         }
-        paymentAmounts.put(currencyCode, new MoneyAmount(currencyCode, amount));
     }
 }
