@@ -7,12 +7,10 @@ package com.mycompany.pt;
 
 import com.mycompany.pt.io.Command;
 import com.mycompany.pt.io.PaymentTrackerReader;
-import com.mycompany.pt.model.CurrencyCode;
 import com.mycompany.pt.scheduling.PaymentsScheduler;
 import com.mycompany.pt.util.UsagePrinter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.math.BigDecimal;
 import java.util.Scanner;
 
 @Slf4j
