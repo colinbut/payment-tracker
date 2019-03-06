@@ -13,6 +13,6 @@ enum class CurrencyCode(val code: String) {
     RMB("RMB")
 }
 
-data class MoneyAmount(val currencyCode: CurrencyCode, val amount: BigDecimal)
+data class MoneyAmount(val currencyCode: CurrencyCode, var amount: BigDecimal)
 
 
