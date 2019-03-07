@@ -9,6 +9,7 @@ import payment.tracker.model.CurrencyCode
 import payment.tracker.model.MoneyAmount
 import java.math.BigDecimal
 
+// TODO convert to Singleton
 class PaymentListing (val paymentAmounts : MutableMap<CurrencyCode, MoneyAmount>) {
 
     fun addPayment(currencyCode: CurrencyCode, amount: BigDecimal) {
