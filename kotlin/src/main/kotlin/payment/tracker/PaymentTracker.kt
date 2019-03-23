@@ -6,32 +6,22 @@ import payment.tracker.util.UsagePrinter
 import java.lang.IllegalArgumentException
 import java.util.*
 import kotlin.collections.HashMap
-import kotlin.concurrent.scheduleAtFixedRate
+
+val paymentListing = PaymentListing(HashMap())
+val parser = Parser(paymentListing)
+val paymentScheduler = PaymentScheduler()
+
+const val DEFAULT_INPUT_FILE = "src/main/resources/initial_input_file.txt"
 
 fun main(args: Array<String>) {
 
-    val paymentListing = PaymentListing(HashMap())
-    val parser = Parser(paymentListing)
-    val paymentScheduler = PaymentScheduler(parser)
+    paymentScheduler.schedulePaymentListing()
 
-    val timer = Timer("schedule", true)
-    timer.scheduleAtFixedRate(1000, 60000) {
-        paymentScheduler.schedulePaymentListings()
+    when {
+        args.isEmpty() -> readDefaultInputFile()
+        args.size == 1 -> readInputFileFromCommandLine(args)
+        args.size > 1 -> showErrorAndExit()
     }
-
-    if (args.size > 1) {
-        UsagePrinter.printUsage()
-        throw IllegalArgumentException("Invalid number of arguments")
-    }
-
-    if (args.size == 1){
-        val optionalInputFile = args[0]
-        PaymentTrackerReader.readInputFile(optionalInputFile)
-                .forEach { line -> parser.invoke(line) }
-    }
-
-    PaymentTrackerReader.readInputFile("src/main/resources/initial_input_file.txt")
-            .forEach { line -> parser.invoke(line) }
 
     val scanner = Scanner(System.`in`)
 
@@ -46,5 +36,15 @@ fun main(args: Array<String>) {
     }
 
     scanner.close()
+}
 
+fun readDefaultInputFile() = PaymentTrackerReader.readInputFile(DEFAULT_INPUT_FILE)
+        .forEach { line -> parser.invoke(line) }
+
+fun readInputFileFromCommandLine(args: Array<String>) = PaymentTrackerReader.readInputFile(args[0])
+        .forEach { line -> parser.invoke(line) }
+
+fun showErrorAndExit() {
+    UsagePrinter.printUsage()
+    throw IllegalArgumentException("Invalid number of arguments")
 }

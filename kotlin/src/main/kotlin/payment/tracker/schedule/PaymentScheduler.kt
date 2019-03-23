@@ -5,16 +5,19 @@
  */
 package payment.tracker.schedule
 
-import payment.tracker.Parser
-import payment.tracker.model.CurrencyCode
-import payment.tracker.model.MoneyAmount
+import payment.tracker.parser
+import java.util.*
+import kotlin.concurrent.scheduleAtFixedRate
 
-class PaymentScheduler(private val parser: Parser) {
+class PaymentScheduler {
 
-    fun schedulePaymentListings() {
-        val paymentAmounts : MutableMap<CurrencyCode, MoneyAmount> = parser.paymentListing.paymentAmounts
-        for ((key, value) in paymentAmounts.entries) {
-            println("$key $value")
+    private val paymentListingTask : PaymentListingTask = PaymentListingTask(parser)
+
+    fun schedulePaymentListing() {
+        val timer = Timer("schedule", true)
+        timer.scheduleAtFixedRate(1000, 60000) {
+            paymentListingTask.schedulePaymentListings()
         }
     }
+
 }
