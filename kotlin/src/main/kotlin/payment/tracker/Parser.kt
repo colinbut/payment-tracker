@@ -9,9 +9,7 @@ import payment.tracker.model.CurrencyCode
 import java.lang.RuntimeException
 import java.math.BigDecimal
 
-class Parser {
-
-    private val paymentListing : PaymentListing = PaymentListing(HashMap())
+class Parser(val paymentListing: PaymentListing) {
 
     fun invoke(input : String) {
         val lineItems = input.split(" ")

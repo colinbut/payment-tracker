@@ -13,8 +13,8 @@ import java.math.BigDecimal
 class PaymentListing (val paymentAmounts : MutableMap<CurrencyCode, MoneyAmount>) {
 
     fun addPayment(currencyCode: CurrencyCode, amount: BigDecimal) {
-        if (paymentAmounts.get(currencyCode) != null) {
-            val existingPayment : MoneyAmount = paymentAmounts.get(currencyCode)!!
+        if (paymentAmounts[currencyCode] != null) {
+            val existingPayment : MoneyAmount = paymentAmounts[currencyCode]!!
             existingPayment.amount = existingPayment.amount.add(amount)
         } else {
             paymentAmounts.putIfAbsent(currencyCode, MoneyAmount(currencyCode, amount))
